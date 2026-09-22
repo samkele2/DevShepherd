@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:dev_shepherd/learning_goals_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,44 +56,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  List<String> learningGoals = [];
 
-  void _addLearningGoal(BuildContext context) {
-    TextEditingController _textEditingController = TextEditingController();
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Add learning goal"),
-            content: TextField(
-                controller: _textEditingController,
-            ),
-              actions: [
-                TextButton(onPressed: () {
-                  setState(() {
-                    print(_textEditingController.text);
-                    learningGoals.add(_textEditingController.text);
-                  });
-                  Navigator.pop(context);
-
-                }, child: Text("Add")),
-                TextButton(onPressed: () {
-                  Navigator.pop(context);  // closes the dialog
-                }, child: Text("Cancel")),
-          ]
-          );
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
@@ -121,20 +90,33 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: .center,
           children: [
-            const Text('Welcome to DevShepherd.'),
-            const Text('Your journey from learner to developer starts here.'),
-            for (String goal in learningGoals)
-              Text(goal),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _addLearningGoal(context);
-        },
-        tooltip: 'Add Learning Goal:',
-        child: const Icon(Icons.add),
-      ),
-    );
+          const Text('Welcome to DevShepherd.'),
+          const Text('Your journey from learner to developer starts here.'),
+
+          // const Text('Learning goals',
+          //     style: TextStyle(
+          //         fontWeight: FontWeight.bold,
+          //         decoration: TextDecoration.underline)),
+          Card(
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LearningGoalsPage(),
+                ),
+                );
+              },
+            child: Text('Learning goals',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline)),
+          ),),
+
+
+      ]
+        ),),
+
+      );
   }
 }
