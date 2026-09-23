@@ -5,7 +5,13 @@ import 'package:dev_shepherd/skill.dart';
 
 
 class SkillsPage extends StatefulWidget {
-  const SkillsPage({super.key});
+
+  final Technology technology;
+
+  const SkillsPage({
+    super.key,
+    required this.technology,
+  });
 
 
   @override
@@ -19,7 +25,7 @@ class  _SkillsPageState extends State<SkillsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'Skills Page',
+            '${widget.technology.name} Skills Page',
         style: TextStyle(
             fontSize: 18,
           fontWeight: FontWeight.bold
@@ -27,26 +33,29 @@ class  _SkillsPageState extends State<SkillsPage> {
       ),
       body: Column(
         children: [
-          for (Technology tech in technologies.technologies)
-            ExpansionTile(
-              title: Text(tech.name),
-              children: [
-                for (Skill skill in tech.skills)
-                  ListTile(
-                    title: Text(skill.name),
-                    subtitle: Text(skill.level.name),
-                    trailing: IconButton(onPressed: () {
-                      setState(() {
-                        skill.advanceLevel();
-                      });
-                    },
-                    icon: const Icon(Icons.arrow_upward),
-                  ),
-                  ) ],
-            ),
-        ],
-      ),
+      for (Skill skill in widget.technology.skills)
+        ListTile(
+        title: Text(skill.name),
+        subtitle: Column(
+          children: [
+            Text(skill.level.name),
+            LinearProgressIndicator(value: skill.progress,)
+    ],
+    ),
 
-        );
+      trailing: IconButton(
+        onPressed: () {
+          setState(() {
+            skill.advanceLevel();
+        });
+      },
+    icon: const Icon(Icons.arrow_upward),
+    ),
+    ),
+        ],),
+
+      );
+
+
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dev_shepherd/learning_goal.dart';
+import 'package:dev_shepherd/learning_goal_data.dart';
 
 class LearningGoalsPage extends StatefulWidget {
   const LearningGoalsPage({super.key});
@@ -8,22 +9,21 @@ class LearningGoalsPage extends StatefulWidget {
   State<LearningGoalsPage> createState() => _LearningGoalsPageState();
 }
 class _LearningGoalsPageState extends State<LearningGoalsPage> {
-  List<LearningGoal> learningGoals = [];
 
   void _addLearningGoal(BuildContext context) {
-    TextEditingController _textEditingController = TextEditingController();
+    TextEditingController textEditingController = TextEditingController();
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
               title: const Text("Add learning goal"),
               content: TextField(
-                controller: _textEditingController,
+                controller: textEditingController,
               ),
               actions: [
                 TextButton(onPressed: () {
                   setState(() {
-                    learningGoals.add(LearningGoal(_textEditingController.text));
+                    learningGoals.add(LearningGoal(textEditingController.text));
                   });
                   Navigator.pop(context);
 
@@ -35,22 +35,7 @@ class _LearningGoalsPageState extends State<LearningGoalsPage> {
           );
         });
   }
-  int get completedGoals {
-    int count = 0;
-    for (LearningGoal goal in learningGoals) {
-      if (goal.isCompleted){
-        count ++;
-      }
-    }return count;
-    }
 
-  int get totalGoals {return learningGoals.length;}
-
-  double get progress {
-    if (totalGoals == 0){
-      return 0.0;
-    } return completedGoals / totalGoals;
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,10 @@
 
+import 'package:dev_shepherd/technology.dart';
+import 'package:dev_shepherd/technologies.dart';
 import 'package:flutter/material.dart';
 import 'package:dev_shepherd/learning_goals_page.dart';
 import 'package:dev_shepherd/skills_page.dart';
+import 'package:dev_shepherd/learning_goal_data.dart';
 
 
 
@@ -59,7 +62,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  Technologies technologies = Technologies();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -109,35 +113,89 @@ class _MyHomePageState extends State<MyHomePage> {
                   MaterialPageRoute(
                       builder: (context) => LearningGoalsPage(),
                 ),
-                );
+                ).then((_) {
+                  setState(() {
+
+                  });
+                });
               },
-            child: Text('Learning goals',
+            child: Column(
+              children: [
+              Text('Learning goals',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,),
           ),
-            ),
-            ),
-          ),
-          Card(
-            child:  Padding(padding: const EdgeInsets.all(6),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SkillsPage(),
-                    ),
-                  );
-                },
-                child: Text('Skills',
+              if (learningGoals.length == 1)
+                Text('${learningGoals.length} goal',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                ),)
+              else
+                Text(
+                  '${learningGoals.length} goals',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,),
-                ),
-              ),
+                      fontWeight: FontWeight.bold
+                  ),)
+
+              ],)
+            ),
             ),
           ),
 
-      ],),
-    ),);
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Column(
+                  children: [
+                    Text('Progress',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    )),
+                    Text('$completedGoals / $totalGoals goals completed'),
+                    Text('${(progress*100).round()}% Complete'),
+
+                    LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor:
+                        Colors.grey,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.cyanAccent,)),
+                  ],
+
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+
+
+          Card(
+            child:  Padding(padding: const EdgeInsets.all(6),
+
+                child: Column(
+                  children: [
+                    Text('Skills',
+                      style: TextStyle(
+                      fontWeight: FontWeight.bold,),
+                ),
+                    for (Technology tech in technologies.technologies)
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(
+                            builder: (context) => SkillsPage(technology: tech),
+                          )
+                          );
+                        },
+                        child: ListTile(
+                          title: Text(tech.name),
+                          subtitle: Text('${tech.skills.length} topics'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                        ),),
+                  ],
+              ),
+            ),
+          ),
+          ],
+          ),
+    ),),);
   }
 }
