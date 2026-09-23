@@ -14,8 +14,6 @@ class SkillsPage extends StatefulWidget {
 
 class  _SkillsPageState extends State<SkillsPage> {
   Technologies technologies = Technologies();
-
-
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -29,27 +27,26 @@ class  _SkillsPageState extends State<SkillsPage> {
       ),
       body: Column(
         children: [
-        for (Technology tech in technologies.technologies)
-          Column(
-            children: [
-              Text(tech.name),
-              for (Skill skill in tech.skills)
-                ListTile(
-                  title: Text(skill.name),
-                  subtitle: Text(skill.level.name),
-                  trailing: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          skill.advanceLevel();
-                        });
-                      }, icon: const Icon(Icons.arrow_upward),
-                )
-                )],
-          )
+          for (Technology tech in technologies.technologies)
+            ExpansionTile(
+              title: Text(tech.name),
+              children: [
+                for (Skill skill in tech.skills)
+                  ListTile(
+                    title: Text(skill.name),
+                    subtitle: Text(skill.level.name),
+                    trailing: IconButton(onPressed: () {
+                      setState(() {
+                        skill.advanceLevel();
+                      });
+                    },
+                    icon: const Icon(Icons.arrow_upward),
+                  ),
+                  ) ],
+            ),
         ],
       ),
 
-    );
-
+        );
   }
 }
