@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:dev_shepherd/learning_goals_page.dart';
+import 'package:dev_shepherd/skills_page.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -113,7 +116,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontWeight: FontWeight.bold,),
           ),
             ),
-            ),),
+            ),
+          ),
+          Card(
+            child:  Padding(padding: const EdgeInsets.all(6),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SkillsPage(),
+                    ),
+                  );
+                },
+                child: Text('Skills',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,),
+                ),
+              ),
+            ),
+          ),
 
       ],),
     ),);
