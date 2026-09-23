@@ -98,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //         fontWeight: FontWeight.bold,
           //         decoration: TextDecoration.underline)),
           Card(
+            child:  Padding(padding: const EdgeInsets.all(6),
             child: InkWell(
               onTap: () {
                 Navigator.push(
@@ -109,14 +110,12 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             child: Text('Learning goals',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline)),
-          ),),
+                    fontWeight: FontWeight.bold,),
+          ),
+            ),
+            ),),
 
-
-      ]
-        ),),
-
-      );
+      ],),
+    ),);
   }
 }
