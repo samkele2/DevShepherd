@@ -1,4 +1,4 @@
-import 'package:dev_shepherd/skill.dart';
+import 'package:dev_shepherd/models/skill.dart';
 
 class Technology {
   String name;

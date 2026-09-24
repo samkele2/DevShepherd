@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dev_shepherd/learning_goal.dart';
-import 'package:dev_shepherd/learning_goal_data.dart';
+import 'package:dev_shepherd/models/learning_goal.dart';
+import 'package:dev_shepherd/data/learning_goal_data.dart';
 
 class LearningGoalsPage extends StatefulWidget {
   const LearningGoalsPage({super.key});

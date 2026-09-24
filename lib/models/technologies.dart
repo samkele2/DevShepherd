@@ -1,5 +1,5 @@
-import 'package:dev_shepherd/skill.dart';
-import 'package:dev_shepherd/technology.dart';
+import 'package:dev_shepherd/models/skill.dart';
+import 'package:dev_shepherd/models/technology.dart';
 
 class Technologies {
   List<Technology> technologies = [

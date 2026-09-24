@@ -1,4 +1,4 @@
-import 'package:dev_shepherd/learning_goal.dart';
+import 'package:dev_shepherd/models/learning_goal.dart';
 
 List<LearningGoal> learningGoals = [];
 

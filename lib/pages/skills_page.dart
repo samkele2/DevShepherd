@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:dev_shepherd/technologies.dart';
-import 'package:dev_shepherd/technology.dart';
-import 'package:dev_shepherd/skill.dart';
+import 'package:dev_shepherd/models/technologies.dart';
+import 'package:dev_shepherd/models/technology.dart';
+import 'package:dev_shepherd/models/skill.dart';
 
 
 class SkillsPage extends StatefulWidget {

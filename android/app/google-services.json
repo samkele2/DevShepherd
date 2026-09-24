@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "118953206524",
+    "project_id": "devshepherd-5d186",
+    "storage_bucket": "devshepherd-5d186.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118953206524:android:a80ac2066eb5a8a0b0ad79",
+        "android_client_info": {
+          "package_name": "com.example.dev_shepherd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlShNWf5w23f74nFvPjPDj3YdwXMfFsnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

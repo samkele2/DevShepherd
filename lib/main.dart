@@ -1,14 +1,21 @@
-
-import 'package:dev_shepherd/technology.dart';
-import 'package:dev_shepherd/technologies.dart';
 import 'package:flutter/material.dart';
-import 'package:dev_shepherd/learning_goals_page.dart';
-import 'package:dev_shepherd/skills_page.dart';
-import 'package:dev_shepherd/learning_goal_data.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:dev_shepherd/models/technology.dart';
+import 'package:dev_shepherd/models/technologies.dart';
+import 'package:dev_shepherd/pages/learning_goals_page.dart';
+import 'package:dev_shepherd/pages/skills_page.dart';
+import 'package:dev_shepherd/data/learning_goal_data.dart';
 
 
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, //run app on whatever platform
+  );
+
   runApp(const MyApp());
 }
 
