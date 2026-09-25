@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:dev_shepherd/models/learning_goal.dart';
 import 'package:dev_shepherd/data/learning_goal_data.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dev_shepherd/services/learning_goal_service.dart';
+
 
 class LearningGoalsPage extends StatefulWidget {
-  const LearningGoalsPage({super.key});
+  final bool loadFromFirebase;
+  final LearningGoalService learningGoalService;
+
+  const LearningGoalsPage({
+    super.key,
+    this.loadFromFirebase = true,
+    required this.learningGoalService,
+  });
 
   @override
   State<LearningGoalsPage> createState() => _LearningGoalsPageState();
@@ -15,7 +23,9 @@ class _LearningGoalsPageState extends State<LearningGoalsPage> {
   void initState() {
     super.initState();
 
-    docsToLearningGoals();
+    if (widget.loadFromFirebase) {
+      docsToLearningGoals();
+    }
   }
   void _addLearningGoal(BuildContext context) {
     TextEditingController textEditingController = TextEditingController();
@@ -30,16 +40,17 @@ class _LearningGoalsPageState extends State<LearningGoalsPage> {
               actions: [
                 TextButton(
                   onPressed: () async {
+                    if (textEditingController.text.trim().isEmpty) {
+                      return;
+                    }
                     try {
                       print("ADD BUTTON PRESSED");
 
-                      await FirebaseFirestore.instance
-                          .collection('learning_goals')
-                          .add({
-                        'title': textEditingController.text,
-                        'completed': false,
-                      });
-                      docsToLearningGoals();
+                      await widget.learningGoalService.addLearningGoal(
+                        textEditingController.text,
+                      );
+
+                      await docsToLearningGoals();
 
                       print("FIREBASE WRITE SUCCESS");
 
@@ -60,17 +71,10 @@ class _LearningGoalsPageState extends State<LearningGoalsPage> {
         });
   }
   Future<void> docsToLearningGoals() async {
-    final result = await FirebaseFirestore.instance
-        .collection('learning_goals').get();
+    final goals = await widget.learningGoalService.getLearningGoals();
 
     learningGoals.clear();
-
-    for (final doc in result.docs) {
-      final data = doc.data();
-      final goal = LearningGoal(data['title'], data['completed']);
-
-      learningGoals.add(goal);
-    }
+    learningGoals.addAll(goals);
 
     setState(() {});
   }

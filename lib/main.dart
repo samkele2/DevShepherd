@@ -6,6 +6,11 @@ import 'package:dev_shepherd/models/technologies.dart';
 import 'package:dev_shepherd/pages/learning_goals_page.dart';
 import 'package:dev_shepherd/pages/skills_page.dart';
 import 'package:dev_shepherd/data/learning_goal_data.dart';
+import 'package:dev_shepherd/pages/auth_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dev_shepherd/services/firebase_auth_service.dart';
+import 'package:dev_shepherd/services/firebase_learning_goal_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -15,9 +20,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform, //run app on whatever platform
   );
-
+  print(FirebaseAuth.instance.currentUser);
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -45,8 +51,13 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Dev Shepherd Home Page'),
-    );
+        home: FirebaseAuth.instance.currentUser == null
+            ? AuthPage(
+          authService: FirebaseAuthService(FirebaseAuth.instance),
+        )
+            : const MyHomePage(
+          title: 'Dev Shepherd Home Page',
+        ));
   }
 }
 
@@ -118,7 +129,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => LearningGoalsPage(),
+                      builder: (context) => LearningGoalsPage(
+                        learningGoalService: FirebaseLearningGoalService(
+                          FirebaseFirestore.instance,
+                        ),
+                      ),
                 ),
                 ).then((_) {
                   setState(() {
