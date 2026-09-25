@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dev_shepherd/models/learning_goal.dart';
 import 'package:dev_shepherd/data/learning_goal_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LearningGoalsPage extends StatefulWidget {
   const LearningGoalsPage({super.key});
@@ -10,6 +11,12 @@ class LearningGoalsPage extends StatefulWidget {
 }
 class _LearningGoalsPageState extends State<LearningGoalsPage> {
 
+  @override
+  void initState() {
+    super.initState();
+
+    docsToLearningGoals();
+  }
   void _addLearningGoal(BuildContext context) {
     TextEditingController textEditingController = TextEditingController();
     showDialog(
@@ -21,19 +28,51 @@ class _LearningGoalsPageState extends State<LearningGoalsPage> {
                 controller: textEditingController,
               ),
               actions: [
-                TextButton(onPressed: () {
-                  setState(() {
-                    learningGoals.add(LearningGoal(textEditingController.text));
-                  });
-                  Navigator.pop(context);
+                TextButton(
+                  onPressed: () async {
+                    try {
+                      print("ADD BUTTON PRESSED");
 
-                }, child: Text("Add")),
+                      await FirebaseFirestore.instance
+                          .collection('learning_goals')
+                          .add({
+                        'title': textEditingController.text,
+                        'completed': false,
+                      });
+                      docsToLearningGoals();
+
+                      print("FIREBASE WRITE SUCCESS");
+
+                      Navigator.pop(context);
+
+                      print("DIALOG SHOULD BE CLOSED");
+                    } catch (e) {
+                      print("FIREBASE ERROR: $e");
+                    }
+                  },
+                  child: const Text("Add"),
+                ),
                 TextButton(onPressed: () {
                   Navigator.pop(context);  // closes the dialog
                 }, child: Text("Cancel")),
               ]
           );
         });
+  }
+  Future<void> docsToLearningGoals() async {
+    final result = await FirebaseFirestore.instance
+        .collection('learning_goals').get();
+
+    learningGoals.clear();
+
+    for (final doc in result.docs) {
+      final data = doc.data();
+      final goal = LearningGoal(data['title'], data['completed']);
+
+      learningGoals.add(goal);
+    }
+
+    setState(() {});
   }
 
 
